@@ -1,4 +1,4 @@
-import { CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, XCircle, Download } from "lucide-react";
 import { getUserId } from "@/lib/auth";
 import { getSettings } from "@/lib/settings";
 import { getIntegration } from "@/lib/integrations";
@@ -6,7 +6,7 @@ import { isAiConfigured } from "@/lib/ai";
 import { updateSettings, saveNotionToken } from "@/app/actions/settings";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
@@ -123,6 +123,17 @@ export default async function ParametresPage() {
             </div>
             <Button type="submit" variant="outline">Connecter Notion</Button>
           </form>
+        </CardContent>
+      </Card>
+
+      {/* Données */}
+      <Card className="mt-4">
+        <CardHeader className="py-3"><CardTitle className="text-base">Données</CardTitle></CardHeader>
+        <CardContent className="flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">Exporte toutes tes données au format JSON.</p>
+          <a href="/api/export" className={buttonVariants({ variant: "outline" })}>
+            <Download /> Exporter
+          </a>
         </CardContent>
       </Card>
     </div>
