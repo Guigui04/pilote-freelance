@@ -44,6 +44,21 @@ export function formatDuration(minutes: number | null | undefined) {
   return `${h} h ${min.toString().padStart(2, "0")}`;
 }
 
+export function toDatetimeLocal(date: Date | string | null | undefined) {
+  if (!date) return "";
+  const d = typeof date === "string" ? new Date(date) : date;
+  const pad = (n: number) => n.toString().padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
+    d.getHours()
+  )}:${pad(d.getMinutes())}`;
+}
+
+export function formatTime(date: Date | string | null | undefined) {
+  if (!date) return "";
+  const d = typeof date === "string" ? new Date(date) : date;
+  return new Intl.DateTimeFormat("fr-FR", { hour: "2-digit", minute: "2-digit" }).format(d);
+}
+
 export function slugify(text: string) {
   return text
     .toLowerCase()
