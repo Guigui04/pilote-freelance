@@ -6,12 +6,12 @@ import { signOut } from "@/app/actions/auth";
 
 export function Topbar({ email }: { email?: string | null }) {
   return (
-    <header className="flex h-14 shrink-0 items-center justify-between border-b bg-card/40 px-4 md:px-6">
+    <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b border-border/60 bg-card/30 px-4 backdrop-blur-xl md:px-6">
       <div className="md:hidden flex items-center gap-2">
-        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-primary-foreground text-sm font-bold">
+        <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand text-primary-foreground text-sm font-bold shadow-glow">
           P
         </div>
-        <span className="font-semibold">PILOTE</span>
+        <span className="font-bold">PILOTE</span>
       </div>
 
       <div className="hidden md:block" />

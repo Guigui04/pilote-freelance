@@ -47,13 +47,13 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/30 p-4">
-      <Card className="w-full max-w-sm">
+    <div className="flex min-h-screen items-center justify-center p-4">
+      <Card className="w-full max-w-sm animate-scale-in">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground text-xl font-bold">
+          <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-brand text-primary-foreground text-2xl font-bold shadow-glow">
             P
           </div>
-          <CardTitle className="text-2xl">PILOTE</CardTitle>
+          <CardTitle className="text-3xl font-bold tracking-tight text-gradient">PILOTE</CardTitle>
           <CardDescription>Cockpit de pilotage freelance</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

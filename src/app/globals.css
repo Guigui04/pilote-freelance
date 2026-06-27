@@ -2,46 +2,79 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===========================================================================
+   PILOTE — Design system "Liquid Glass" (indigo)
+   Généré avec l'aide du skill ui-ux-pro-max
+   =========================================================================== */
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 4%;
+    /* Light (par défaut) */
+    --background: 250 100% 98%;
+    --foreground: 244 47% 17%;
+
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 4%;
+    --card-foreground: 244 47% 17%;
+
     --primary: 243 75% 59%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 240 5% 96%;
-    --secondary-foreground: 240 6% 10%;
-    --muted: 240 5% 96%;
-    --muted-foreground: 240 4% 46%;
-    --accent: 240 5% 96%;
-    --accent-foreground: 240 6% 10%;
-    --destructive: 0 84% 60%;
+
+    --secondary: 240 30% 96%;
+    --secondary-foreground: 244 40% 22%;
+
+    --muted: 230 40% 96%;
+    --muted-foreground: 240 8% 46%;
+
+    --accent: 243 60% 96%;
+    --accent-foreground: 244 47% 22%;
+
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 240 6% 90%;
-    --input: 240 6% 90%;
+
+    --success: 160 84% 33%;
+    --warning: 38 92% 50%;
+
+    --border: 240 35% 89%;
+    --input: 240 35% 89%;
     --ring: 243 75% 59%;
-    --radius: 0.6rem;
+    --radius: 1rem;
+
+    /* Surfaces verre */
+    --glass-bg: 0 0% 100% / 0.72;
+    --glass-border: 240 40% 90% / 0.7;
   }
 
   .dark {
-    --background: 240 10% 6%;
-    --foreground: 0 0% 98%;
-    --card: 240 8% 9%;
-    --card-foreground: 0 0% 98%;
-    --primary: 243 75% 64%;
+    --background: 240 24% 5%;
+    --foreground: 240 6% 93%;
+
+    --card: 240 18% 11%;
+    --card-foreground: 240 6% 93%;
+
+    --primary: 234 64% 62%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 240 4% 16%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 4% 16%;
-    --muted-foreground: 240 5% 65%;
-    --accent: 240 4% 16%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 63% 45%;
+
+    --secondary: 240 12% 16%;
+    --secondary-foreground: 240 6% 93%;
+
+    --muted: 240 12% 15%;
+    --muted-foreground: 225 7% 62%;
+
+    --accent: 240 14% 17%;
+    --accent-foreground: 240 6% 93%;
+
+    --destructive: 0 63% 50%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 4% 18%;
-    --input: 240 4% 18%;
-    --ring: 243 75% 64%;
+
+    --success: 160 70% 45%;
+    --warning: 38 92% 55%;
+
+    --border: 240 12% 20%;
+    --input: 240 12% 22%;
+    --ring: 234 64% 62%;
+
+    --glass-bg: 240 20% 13% / 0.55;
+    --glass-border: 0 0% 100% / 0.08;
   }
 }
 
@@ -49,7 +82,82 @@
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    min-height: 100vh;
+    background-color: hsl(var(--background));
+    background-image:
+      radial-gradient(38rem 38rem at 0% 0%, hsl(243 75% 59% / 0.10), transparent 60%),
+      radial-gradient(34rem 34rem at 100% 0%, hsl(272 80% 64% / 0.10), transparent 60%),
+      radial-gradient(40rem 40rem at 85% 100%, hsl(243 75% 59% / 0.08), transparent 60%);
+    background-attachment: fixed;
+  }
+
+  .dark body {
+    background-image:
+      radial-gradient(40rem 40rem at 0% 0%, hsl(243 75% 55% / 0.20), transparent 58%),
+      radial-gradient(34rem 34rem at 100% 0%, hsl(272 80% 58% / 0.16), transparent 58%),
+      radial-gradient(44rem 44rem at 85% 100%, hsl(234 64% 50% / 0.16), transparent 55%);
+  }
+
+  /* Barre de défilement discrète */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 9999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(var(--muted-foreground) / 0.5);
+  }
+
+  ::selection {
+    background-color: hsl(var(--primary) / 0.2);
+  }
+}
+
+@layer components {
+  /* Surface "verre dépoli" */
+  .glass {
+    background-color: hsl(var(--glass-bg));
+    border: 1px solid hsl(var(--glass-border));
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    box-shadow:
+      0 8px 32px -12px hsl(243 75% 40% / 0.18),
+      0 2px 8px -4px rgb(15 23 42 / 0.06);
+  }
+  .dark .glass {
+    box-shadow:
+      0 12px 40px -12px rgb(0 0 0 / 0.55),
+      inset 0 1px 0 0 rgb(255 255 255 / 0.04);
+  }
+
+  /* Dégradé de marque (boutons, accents) */
+  .bg-brand {
+    background-image: linear-gradient(135deg, hsl(243 75% 60%), hsl(262 78% 62%));
+  }
+  .text-gradient {
+    background-image: linear-gradient(135deg, hsl(243 75% 60%), hsl(272 80% 64%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* Respect de prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

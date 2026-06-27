@@ -17,7 +17,9 @@ export default async function AppLayout({
       <Sidebar />
       <div className="flex flex-1 flex-col overflow-hidden">
         <Topbar email={user.email} />
-        <main className="flex-1 overflow-y-auto p-4 md:p-6">{children}</main>
+        <main className="flex-1 overflow-y-auto p-4 md:p-6">
+          <div className="mx-auto max-w-7xl animate-fade-in">{children}</div>
+        </main>
         <MobileNav />
       </div>
     </div>

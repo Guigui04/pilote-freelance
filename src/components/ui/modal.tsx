@@ -30,10 +30,10 @@ export function Modal({ trigger, title, description, children, className }: Moda
         {trigger}
       </span>
       {open && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/50 p-4 sm:items-center">
+        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/60 p-4 backdrop-blur-sm animate-fade-in sm:items-center">
           <div
             className={cn(
-              "relative w-full max-w-lg rounded-xl border bg-card p-6 shadow-lg my-8",
+              "glass relative my-8 w-full max-w-lg rounded-2xl p-6 animate-scale-in",
               className
             )}
           >
