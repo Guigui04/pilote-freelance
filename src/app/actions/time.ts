@@ -65,10 +65,11 @@ export async function stopTimer() {
 export async function addManualEntry(formData: FormData) {
   const userId = await getUserId();
   const startRaw = str(formData.get("startedAt"));
-  const minutesRaw = str(formData.get("minutes"));
-  if (!startRaw || !minutesRaw) return;
+  const hoursRaw = str(formData.get("hours"));
+  if (!startRaw || !hoursRaw) return;
 
-  const minutes = parseInt(minutesRaw, 10);
+  // Saisie en heures (ex. 2,5) -> stockage en minutes.
+  const minutes = Math.max(1, Math.round(parseFloat(hoursRaw.replace(",", ".")) * 60));
   const started = new Date(startRaw);
   const ended = new Date(started.getTime() + minutes * 60000);
 

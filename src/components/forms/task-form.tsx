@@ -92,8 +92,8 @@ export function TaskFormFields({
           <Input id="dueDate" name="dueDate" type="datetime-local" />
         </div>
         <div>
-          <Label htmlFor="estimatedMinutes">Estimation (min)</Label>
-          <Input id="estimatedMinutes" name="estimatedMinutes" type="number" min="0" />
+          <Label htmlFor="estimatedHours">Estimation (h)</Label>
+          <Input id="estimatedHours" name="estimatedHours" type="number" step="0.25" min="0" placeholder="ex. 1,5" />
         </div>
       </div>
 

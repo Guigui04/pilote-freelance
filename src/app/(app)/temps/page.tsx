@@ -57,8 +57,8 @@ export default async function TempsPage() {
                 <Input id="startedAt" name="startedAt" type="datetime-local" required />
               </div>
               <div>
-                <Label htmlFor="minutes">Durée (min)</Label>
-                <Input id="minutes" name="minutes" type="number" min="1" required />
+                <Label htmlFor="hours">Durée (h)</Label>
+                <Input id="hours" name="hours" type="number" step="0.25" min="0.25" placeholder="ex. 2,5" required />
               </div>
             </div>
             <label className="flex items-center gap-2 text-sm">

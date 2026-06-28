@@ -33,7 +33,7 @@ export async function createTask(formData: FormData) {
 
   const projectId = str(formData.get("projectId"));
   const dueRaw = str(formData.get("dueDate"));
-  const estRaw = str(formData.get("estimatedMinutes"));
+  const estRaw = str(formData.get("estimatedHours"));
 
   await db.insert(tasks).values({
     userId,
@@ -45,7 +45,7 @@ export async function createTask(formData: FormData) {
     priority: (str(formData.get("priority")) as never) ?? "moyenne",
     status: (str(formData.get("status")) as never) ?? "a_faire",
     dueDate: dueRaw ? new Date(dueRaw) : null,
-    estimatedMinutes: estRaw ? parseInt(estRaw, 10) : null,
+    estimatedMinutes: estRaw ? Math.round(parseFloat(estRaw.replace(",", ".")) * 60) : null,
   });
 
   await recomputeProgress(projectId);
