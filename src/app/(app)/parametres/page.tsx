@@ -91,8 +91,9 @@ export default async function ParametresPage() {
               <div><Label>Taux TVA (%)</Label><Input name="vatRate" type="number" step="0.1" defaultValue={s.vatRate ?? "0"} /></div>
               <div><Label>Taux URSSAF (%)</Label><Input name="urssafRate" type="number" step="0.1" defaultValue={s.urssafRate ?? "22"} /></div>
             </div>
-            <div className="grid grid-cols-3 gap-3">
-              <div><Label>Taux horaire défaut</Label><Input name="defaultHourlyRate" type="number" step="0.01" defaultValue={s.defaultHourlyRate ?? "0"} /></div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <div><Label>TJM par défaut (€)</Label><Input name="defaultDailyRate" type="number" step="0.01" defaultValue={s.defaultDailyRate ?? ""} /></div>
+              <div><Label>Base heures / jour</Label><Input name="hoursPerDay" type="number" step="0.5" defaultValue={s.hoursPerDay ?? "7"} /></div>
               <div><Label>Préfixe factures</Label><Input name="invoicePrefix" defaultValue={s.invoicePrefix ?? "F"} /></div>
               <div><Label>Préfixe devis</Label><Input name="quotePrefix" defaultValue={s.quotePrefix ?? "D"} /></div>
             </div>

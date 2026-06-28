@@ -29,7 +29,8 @@ export async function updateSettings(formData: FormData) {
     .update(settings)
     .set({
       currency: str(formData.get("currency")) ?? "EUR",
-      defaultHourlyRate: str(formData.get("defaultHourlyRate")) ?? "0",
+      defaultDailyRate: str(formData.get("defaultDailyRate")),
+      hoursPerDay: str(formData.get("hoursPerDay")) ?? "7",
       fiscalRegime: str(formData.get("fiscalRegime")) ?? "auto_entrepreneur",
       vatApplicable: str(formData.get("vatApplicable")) === "true",
       vatRate: str(formData.get("vatRate")) ?? "0",

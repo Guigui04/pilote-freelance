@@ -10,6 +10,8 @@ import {
   nextInvoiceNumber,
   refreshInvoiceStatus,
 } from "@/lib/finance";
+import { getSettings } from "@/lib/settings";
+import { minutesToDays } from "@/lib/utils";
 import { and, eq, inArray } from "drizzle-orm";
 
 function str(v: FormDataEntryValue | null) {
@@ -143,34 +145,38 @@ export async function deleteInvoice(id: string) {
 }
 
 /**
- * Ajoute les temps facturables non encore facturés d'un projet comme lignes,
- * regroupés par taux horaire.
+ * Ajoute les temps facturables non encore facturés d'un projet comme une ligne
+ * exprimée en jours (TJM) : quantité = jours, prix unitaire = taux journalier.
  */
 export async function billTimeEntries(invoiceId: string, projectId: string) {
   const userId = await getUserId();
-  const entries = await db
-    .select()
-    .from(timeEntries)
-    .where(
-      and(
-        eq(timeEntries.userId, userId),
-        eq(timeEntries.projectId, projectId),
-        eq(timeEntries.billable, true),
-        eq(timeEntries.invoiced, false)
-      )
-    );
+  const [entries, settings] = await Promise.all([
+    db
+      .select()
+      .from(timeEntries)
+      .where(
+        and(
+          eq(timeEntries.userId, userId),
+          eq(timeEntries.projectId, projectId),
+          eq(timeEntries.billable, true),
+          eq(timeEntries.invoiced, false)
+        )
+      ),
+    getSettings(userId),
+  ]);
 
   if (entries.length === 0) return;
 
   const [proj] = await db.select().from(projects).where(eq(projects.id, projectId)).limit(1);
+  const hoursPerDay = Number(settings.hoursPerDay ?? 7) || 7;
   const totalMinutes = entries.reduce((s, e) => s + (e.durationMinutes ?? 0), 0);
-  const rate = Number(entries[0].hourlyRate ?? proj?.hourlyRate ?? 0);
-  const hours = Math.round((totalMinutes / 60) * 100) / 100;
+  const rate = Number(entries[0].dailyRate ?? proj?.dailyRate ?? 0);
+  const days = Math.round(minutesToDays(totalMinutes, hoursPerDay) * 100) / 100;
 
   await db.insert(invoiceItems).values({
     invoiceId,
-    description: `Prestations ${proj?.name ?? ""} — ${hours} h`,
-    quantity: hours.toString(),
+    description: `Prestations ${proj?.name ?? ""} — ${days} j`,
+    quantity: days.toString(),
     unitPrice: rate.toString(),
     vatRate: "0",
   });

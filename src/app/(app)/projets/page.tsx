@@ -2,6 +2,8 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { listProjects } from "@/lib/data/projects";
 import { listCompanies } from "@/lib/data/companies";
+import { getSettings } from "@/lib/settings";
+import { getUserId } from "@/lib/auth";
 import { createProject, updateProjectStatus } from "@/app/actions/projects";
 import { PageHeader, EmptyState } from "@/components/page-header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -14,7 +16,12 @@ import { PROJECT_STATUS, PROJECT_STATUS_ORDER } from "@/lib/labels";
 import { formatMoney, formatDate } from "@/lib/utils";
 
 export default async function ProjetsPage() {
-  const [projects, companies] = await Promise.all([listProjects(), listCompanies()]);
+  const userId = await getUserId();
+  const [projects, companies, settings] = await Promise.all([
+    listProjects(),
+    listCompanies(),
+    getSettings(userId),
+  ]);
   const companyOptions = companies.map((c) => ({ id: c.id, name: c.name }));
 
   const newButton = (
@@ -27,7 +34,10 @@ export default async function ProjetsPage() {
       }
     >
       <form action={createProject} className="space-y-4">
-        <ProjectFormFields companies={companyOptions} />
+        <ProjectFormFields
+          companies={companyOptions}
+          defaultDailyRate={settings.defaultDailyRate}
+        />
         <div className="flex justify-end">
           <Button type="submit">Créer</Button>
         </div>

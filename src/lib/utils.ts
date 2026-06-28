@@ -44,6 +44,24 @@ export function formatDuration(minutes: number | null | undefined) {
   return `${h} h ${min.toString().padStart(2, "0")}`;
 }
 
+/** Formate un nombre de jours (TJM) — ex. 2.5 -> "2,5 j". */
+export function formatDays(days: number | null | undefined) {
+  const d = days ?? 0;
+  return `${(Math.round(d * 100) / 100).toLocaleString("fr-FR", {
+    maximumFractionDigits: 2,
+  })} j`;
+}
+
+/** Convertit des minutes en jours selon une base d'heures/jour (défaut 7 h). */
+export function minutesToDays(
+  minutes: number | null | undefined,
+  hoursPerDay: number | string | null | undefined = 7
+) {
+  const h = (minutes ?? 0) / 60;
+  const base = Number(hoursPerDay) || 7;
+  return h / base;
+}
+
 export function toDatetimeLocal(date: Date | string | null | undefined) {
   if (!date) return "";
   const d = typeof date === "string" ? new Date(date) : date;

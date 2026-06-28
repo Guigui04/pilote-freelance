@@ -12,16 +12,19 @@ type Project = {
   startDate?: string | null;
   endDate?: string | null;
   budget?: string | null;
-  hourlyRate?: string | null;
+  dailyRate?: string | null;
   color?: string | null;
 };
 
 export function ProjectFormFields({
   project,
   companies,
+  defaultDailyRate,
 }: {
   project?: Project;
   companies: { id: string; name: string }[];
+  /** TJM pré-rempli sur un nouveau projet (issu des paramètres). */
+  defaultDailyRate?: string | null;
 }) {
   return (
     <>
@@ -68,8 +71,14 @@ export function ProjectFormFields({
           <Input id="budget" name="budget" type="number" step="0.01" defaultValue={project?.budget ?? ""} />
         </div>
         <div>
-          <Label htmlFor="hourlyRate">Taux horaire (€)</Label>
-          <Input id="hourlyRate" name="hourlyRate" type="number" step="0.01" defaultValue={project?.hourlyRate ?? ""} />
+          <Label htmlFor="dailyRate">Taux journalier / TJM (€)</Label>
+          <Input
+            id="dailyRate"
+            name="dailyRate"
+            type="number"
+            step="0.01"
+            defaultValue={project?.dailyRate ?? defaultDailyRate ?? ""}
+          />
         </div>
         <div>
           <Label htmlFor="color">Couleur</Label>

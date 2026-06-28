@@ -34,14 +34,14 @@ export async function startTimer(formData: FormData) {
   await stopAllRunning(userId);
 
   const projectId = str(formData.get("projectId"));
-  let hourlyRate: string | null = null;
+  let dailyRate: string | null = null;
   if (projectId) {
     const [p] = await db
-      .select({ rate: projects.hourlyRate, companyId: projects.companyId })
+      .select({ rate: projects.dailyRate, companyId: projects.companyId })
       .from(projects)
       .where(eq(projects.id, projectId))
       .limit(1);
-    hourlyRate = p?.rate ?? null;
+    dailyRate = p?.rate ?? null;
   }
 
   await db.insert(timeEntries).values({
@@ -50,7 +50,7 @@ export async function startTimer(formData: FormData) {
     description: str(formData.get("description")),
     startedAt: new Date(),
     billable: str(formData.get("billable")) !== "false",
-    hourlyRate,
+    dailyRate,
   });
 
   revalidatePath("/temps");
@@ -73,14 +73,14 @@ export async function addManualEntry(formData: FormData) {
   const ended = new Date(started.getTime() + minutes * 60000);
 
   const projectId = str(formData.get("projectId"));
-  let hourlyRate: string | null = null;
+  let dailyRate: string | null = null;
   if (projectId) {
     const [p] = await db
-      .select({ rate: projects.hourlyRate })
+      .select({ rate: projects.dailyRate })
       .from(projects)
       .where(eq(projects.id, projectId))
       .limit(1);
-    hourlyRate = p?.rate ?? null;
+    dailyRate = p?.rate ?? null;
   }
 
   await db.insert(timeEntries).values({
@@ -91,7 +91,7 @@ export async function addManualEntry(formData: FormData) {
     endedAt: ended,
     durationMinutes: minutes,
     billable: str(formData.get("billable")) !== "false",
-    hourlyRate,
+    dailyRate,
   });
 
   revalidatePath("/temps");

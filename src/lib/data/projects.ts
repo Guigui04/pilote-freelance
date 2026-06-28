@@ -14,6 +14,7 @@ export async function listProjects() {
       progress: projects.progress,
       endDate: projects.endDate,
       budget: projects.budget,
+      dailyRate: projects.dailyRate,
       companyId: projects.companyId,
       companyName: companies.name,
     })

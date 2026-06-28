@@ -59,7 +59,7 @@ export default async function ProjectDetailPage({
               project={{
                 ...project,
                 budget: project.budget ?? undefined,
-                hourlyRate: project.hourlyRate ?? undefined,
+                dailyRate: project.dailyRate ?? undefined,
               }}
               companies={companyOptions}
             />
@@ -95,10 +95,10 @@ export default async function ProjectDetailPage({
                 <span>{formatMoney(project.budget)}</span>
               </div>
             )}
-            {project.hourlyRate && (
+            {project.dailyRate && (
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Taux horaire</span>
-                <span>{formatMoney(project.hourlyRate)}</span>
+                <span className="text-muted-foreground">Taux journalier (TJM)</span>
+                <span>{formatMoney(project.dailyRate)}</span>
               </div>
             )}
             {project.endDate && (

@@ -32,7 +32,7 @@ export async function createProject(formData: FormData) {
       startDate: str(formData.get("startDate")),
       endDate: str(formData.get("endDate")),
       budget: num(formData.get("budget")),
-      hourlyRate: num(formData.get("hourlyRate")),
+      dailyRate: num(formData.get("dailyRate")),
       color: str(formData.get("color")) ?? "#6366f1",
     })
     .returning();
@@ -53,7 +53,7 @@ export async function updateProject(id: string, formData: FormData) {
       startDate: str(formData.get("startDate")),
       endDate: str(formData.get("endDate")),
       budget: num(formData.get("budget")),
-      hourlyRate: num(formData.get("hourlyRate")),
+      dailyRate: num(formData.get("dailyRate")),
       color: str(formData.get("color")) ?? "#6366f1",
       updatedAt: new Date(),
     })

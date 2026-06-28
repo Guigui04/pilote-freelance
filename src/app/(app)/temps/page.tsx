@@ -1,6 +1,8 @@
 import { Plus, Play, Trash2 } from "lucide-react";
 import { getRunningEntry, listTimeEntries, getWeekStats } from "@/lib/data/time";
 import { listProjects } from "@/lib/data/projects";
+import { getSettings } from "@/lib/settings";
+import { getUserId } from "@/lib/auth";
 import { startTimer, stopTimer, addManualEntry, deleteTimeEntry } from "@/app/actions/time";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,15 +14,18 @@ import { Select } from "@/components/ui/select";
 import { Modal } from "@/components/ui/modal";
 import { TimerWidget } from "@/components/timer-widget";
 import { ConfirmForm } from "@/components/confirm-form";
-import { formatDuration, formatDateTime, formatMoney } from "@/lib/utils";
+import { formatDuration, formatDateTime, formatMoney, formatDays, minutesToDays } from "@/lib/utils";
 
 export default async function TempsPage() {
-  const [running, entries, week, projects] = await Promise.all([
+  const userId = await getUserId();
+  const [running, entries, week, projects, settings] = await Promise.all([
     getRunningEntry(),
     listTimeEntries(50),
     getWeekStats(),
     listProjects(),
+    getSettings(userId),
   ]);
+  const hoursPerDay = Number(settings.hoursPerDay ?? 7) || 7;
 
   const projectOptions = (
     <>
@@ -124,9 +129,12 @@ export default async function TempsPage() {
                     </p>
                   </div>
                   {!e.billable && <Badge variant="secondary">Non fact.</Badge>}
-                  {e.hourlyRate && e.billable && (
+                  {e.dailyRate && e.billable && (
                     <span className="text-xs text-muted-foreground">
-                      {formatMoney((Number(e.hourlyRate) * (e.durationMinutes ?? 0)) / 60)}
+                      {formatDays(minutesToDays(e.durationMinutes, hoursPerDay))} ·{" "}
+                      {formatMoney(
+                        minutesToDays(e.durationMinutes, hoursPerDay) * Number(e.dailyRate)
+                      )}
                     </span>
                   )}
                   <span className="text-sm font-medium tabular-nums">
