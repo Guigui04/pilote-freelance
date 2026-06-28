@@ -22,6 +22,7 @@ import { ConfirmForm } from "@/components/confirm-form";
 import { TaskItem } from "@/components/task-item";
 import { ProjectFormFields } from "@/components/forms/project-form";
 import { TaskFormFields } from "@/components/forms/task-form";
+import { FormFooter } from "@/components/forms/form-footer";
 import { PROJECT_STATUS } from "@/lib/labels";
 import { formatMoney, formatDate, cn } from "@/lib/utils";
 
@@ -54,7 +55,7 @@ export default async function ProjectDetailPage({
           title="Modifier le projet"
           trigger={<Button variant="outline"><Pencil /> Modifier</Button>}
         >
-          <form action={updateProject.bind(null, project.id)} className="space-y-4">
+          <form action={updateProject.bind(null, project.id)} className="space-y-5">
             <ProjectFormFields
               project={{
                 ...project,
@@ -63,9 +64,7 @@ export default async function ProjectDetailPage({
               }}
               companies={companyOptions}
             />
-            <div className="flex justify-end">
-              <Button type="submit">Enregistrer</Button>
-            </div>
+            <FormFooter submitLabel="Enregistrer" />
           </form>
         </Modal>
         <ConfirmForm action={deleteProject.bind(null, project.id)} message="Supprimer ce projet ?">
@@ -184,11 +183,9 @@ export default async function ProjectDetailPage({
             title="Nouvelle tâche"
             trigger={<Button size="sm"><Plus /> Tâche</Button>}
           >
-            <form action={createTask} className="space-y-4">
+            <form action={createTask} className="space-y-5">
               <TaskFormFields fixedProjectId={project.id} />
-              <div className="flex justify-end">
-                <Button type="submit">Créer</Button>
-              </div>
+              <FormFooter submitLabel="Créer la tâche" />
             </form>
           </Modal>
         </CardHeader>

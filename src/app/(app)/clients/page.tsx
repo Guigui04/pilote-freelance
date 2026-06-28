@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Modal } from "@/components/ui/modal";
 import { CompanyFormFields } from "@/components/forms/company-form";
+import { FormFooter } from "@/components/forms/form-footer";
 import { COMPANY_STATUS } from "@/lib/labels";
 
 export default async function ClientsPage() {
@@ -22,11 +23,9 @@ export default async function ClientsPage() {
         </Button>
       }
     >
-      <form action={createCompany} className="space-y-4">
+      <form action={createCompany} className="space-y-5">
         <CompanyFormFields />
-        <div className="flex justify-end">
-          <Button type="submit">Créer</Button>
-        </div>
+        <FormFooter submitLabel="Créer le client" />
       </form>
     </Modal>
   );

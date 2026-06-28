@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
 import { TaskItem } from "@/components/task-item";
 import { TaskFormFields } from "@/components/forms/task-form";
+import { FormFooter } from "@/components/forms/form-footer";
 
 function startOfToday() {
   const d = new Date();
@@ -53,11 +54,9 @@ export default async function TachesPage() {
 
   const newButton = (
     <Modal title="Nouvelle tâche" trigger={<Button><Plus /> Nouvelle tâche</Button>}>
-      <form action={createTask} className="space-y-4">
+      <form action={createTask} className="space-y-5">
         <TaskFormFields projects={projectOptions} companies={companyOptions} />
-        <div className="flex justify-end">
-          <Button type="submit">Créer</Button>
-        </div>
+        <FormFooter submitLabel="Créer la tâche" />
       </form>
     </Modal>
   );

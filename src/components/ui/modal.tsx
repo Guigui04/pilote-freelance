@@ -5,6 +5,15 @@ import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+// Contexte permettant à des enfants (ex. FormFooter) de fermer le modal sans
+// recevoir de fonction en prop — indispensable quand les enfants sont passés
+// en JSX depuis un Server Component (les fonctions ne traversent pas RSC).
+const ModalCloseContext = React.createContext<(() => void) | null>(null);
+
+export function useModalClose() {
+  return React.useContext(ModalCloseContext);
+}
+
 type ModalProps = {
   trigger: React.ReactNode;
   title?: string;
@@ -64,9 +73,11 @@ export function Modal({ trigger, title, description, children, className }: Moda
         {description && (
           <p className="mt-1 text-sm text-muted-foreground">{description}</p>
         )}
-        <div className={cn(title || description ? "mt-4" : "")}>
-          {typeof children === "function" ? children(close) : children}
-        </div>
+        <ModalCloseContext.Provider value={close}>
+          <div className={cn(title || description ? "mt-4" : "")}>
+            {typeof children === "function" ? children(close) : children}
+          </div>
+        </ModalCloseContext.Provider>
       </div>
     </div>
   ) : null;

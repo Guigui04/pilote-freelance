@@ -2,6 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Req, Hint, SectionLabel, ColorField } from "@/components/forms/form-kit";
 import { PROJECT_STATUS } from "@/lib/labels";
 
 type Project = {
@@ -27,12 +28,15 @@ export function ProjectFormFields({
   defaultDailyRate?: string | null;
 }) {
   return (
-    <>
+    <div className="space-y-5">
       <div>
-        <Label htmlFor="name">Nom du projet *</Label>
-        <Input id="name" name="name" defaultValue={project?.name ?? ""} required />
+        <Label htmlFor="name">
+          Nom du projet <Req />
+        </Label>
+        <Input id="name" name="name" defaultValue={project?.name ?? ""} placeholder="Ex. Refonte site vitrine" required />
       </div>
-      <div className="grid grid-cols-2 gap-3">
+
+      <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="companyId">Client</Label>
           <Select id="companyId" name="companyId" defaultValue={project?.companyId ?? ""}>
@@ -55,40 +59,53 @@ export function ProjectFormFields({
           </Select>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <Label htmlFor="startDate">Début</Label>
-          <Input id="startDate" name="startDate" type="date" defaultValue={project?.startDate ?? ""} />
-        </div>
-        <div>
-          <Label htmlFor="endDate">Échéance</Label>
-          <Input id="endDate" name="endDate" type="date" defaultValue={project?.endDate ?? ""} />
-        </div>
-      </div>
-      <div className="grid grid-cols-3 gap-3">
-        <div>
-          <Label htmlFor="budget">Budget (€)</Label>
-          <Input id="budget" name="budget" type="number" step="0.01" defaultValue={project?.budget ?? ""} />
-        </div>
-        <div>
-          <Label htmlFor="dailyRate">Taux journalier / TJM (€)</Label>
-          <Input
-            id="dailyRate"
-            name="dailyRate"
-            type="number"
-            step="0.01"
-            defaultValue={project?.dailyRate ?? defaultDailyRate ?? ""}
-          />
-        </div>
-        <div>
-          <Label htmlFor="color">Couleur</Label>
-          <Input id="color" name="color" type="color" defaultValue={project?.color ?? "#6366f1"} className="h-9 p-1" />
+
+      <div className="border-t border-border/60 pt-4">
+        <SectionLabel>Planning</SectionLabel>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="startDate">Début</Label>
+            <Input id="startDate" name="startDate" type="date" defaultValue={project?.startDate ?? ""} />
+          </div>
+          <div>
+            <Label htmlFor="endDate">Échéance</Label>
+            <Input id="endDate" name="endDate" type="date" defaultValue={project?.endDate ?? ""} />
+          </div>
         </div>
       </div>
+
+      <div className="border-t border-border/60 pt-4">
+        <SectionLabel>Tarification</SectionLabel>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="dailyRate">Taux journalier / TJM (€)</Label>
+            <Input
+              id="dailyRate"
+              name="dailyRate"
+              type="number"
+              step="0.01"
+              inputMode="decimal"
+              placeholder="Ex. 390"
+              defaultValue={project?.dailyRate ?? defaultDailyRate ?? ""}
+            />
+            <Hint>Sert à valoriser le temps suivi et les factures.</Hint>
+          </div>
+          <div>
+            <Label htmlFor="budget">Budget (€)</Label>
+            <Input id="budget" name="budget" type="number" step="0.01" inputMode="decimal" placeholder="Optionnel" defaultValue={project?.budget ?? ""} />
+            <Hint>Enveloppe totale indicative.</Hint>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <ColorField name="color" defaultValue={project?.color} />
+      </div>
+
       <div>
         <Label htmlFor="description">Description</Label>
-        <Textarea id="description" name="description" defaultValue={project?.description ?? ""} />
+        <Textarea id="description" name="description" defaultValue={project?.description ?? ""} placeholder="Objectifs, périmètre, livrables…" />
       </div>
-    </>
+    </div>
   );
 }

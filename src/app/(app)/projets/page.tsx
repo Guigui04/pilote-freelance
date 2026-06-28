@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Modal } from "@/components/ui/modal";
 import { StatusSelect } from "@/components/status-select";
 import { ProjectFormFields } from "@/components/forms/project-form";
+import { FormFooter } from "@/components/forms/form-footer";
 import { PROJECT_STATUS, PROJECT_STATUS_ORDER } from "@/lib/labels";
 import { formatMoney, formatDate } from "@/lib/utils";
 
@@ -33,14 +34,12 @@ export default async function ProjetsPage() {
         </Button>
       }
     >
-      <form action={createProject} className="space-y-4">
+      <form action={createProject} className="space-y-5">
         <ProjectFormFields
           companies={companyOptions}
           defaultDailyRate={settings.defaultDailyRate}
         />
-        <div className="flex justify-end">
-          <Button type="submit">Créer</Button>
-        </div>
+        <FormFooter submitLabel="Créer le projet" />
       </form>
     </Modal>
   );

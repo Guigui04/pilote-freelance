@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Modal } from "@/components/ui/modal";
 import { ConfirmForm } from "@/components/confirm-form";
 import { CompanyFormFields } from "@/components/forms/company-form";
+import { FormFooter } from "@/components/forms/form-footer";
 import { COMPANY_STATUS, PROJECT_STATUS, INVOICE_STATUS } from "@/lib/labels";
 import { formatMoney, formatDate } from "@/lib/utils";
 
@@ -49,11 +50,9 @@ export default async function CompanyDetailPage({
             </Button>
           }
         >
-          <form action={updateCompany.bind(null, company.id)} className="space-y-4">
+          <form action={updateCompany.bind(null, company.id)} className="space-y-5">
             <CompanyFormFields company={company} />
-            <div className="flex justify-end">
-              <Button type="submit">Enregistrer</Button>
-            </div>
+            <FormFooter submitLabel="Enregistrer" />
           </form>
         </Modal>
         <ConfirmForm action={deleteCompany.bind(null, company.id)} message="Supprimer ce client et tout son contenu ?">
