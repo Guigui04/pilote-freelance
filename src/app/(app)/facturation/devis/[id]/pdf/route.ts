@@ -3,6 +3,8 @@ import { getSettings } from "@/lib/settings";
 import { getUserId } from "@/lib/auth";
 import { renderFinancePdf } from "@/lib/pdf/finance-pdf";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(
   _req: Request,
   { params }: { params: Promise<{ id: string }> }

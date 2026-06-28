@@ -2,9 +2,13 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "./schema";
 
-const connectionString = process.env.DATABASE_URL;
+// `||` (et non `??`) pour que DATABASE_URL absent OU vide retombe sur le fallback :
+// sur Vercel la variable peut exister mais valoir "", ce qui ferait planter
+// `postgres("")` (Invalid URL) au chargement du module, donc au build.
+const connectionString =
+  process.env.DATABASE_URL || "postgres://localhost:5432/postgres";
 
-if (!connectionString) {
+if (!process.env.DATABASE_URL) {
   // Avertissement non bloquant au build : la connexion n'est utilisée qu'au runtime.
   console.warn("[db] DATABASE_URL manquant — la base de données ne sera pas accessible.");
 }
@@ -16,7 +20,7 @@ const globalForDb = globalThis as unknown as {
 
 const client =
   globalForDb.client ??
-  postgres(connectionString ?? "postgres://localhost:5432/postgres", {
+  postgres(connectionString, {
     prepare: false,
     max: 1,
   });

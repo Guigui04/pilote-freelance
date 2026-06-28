@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { ensureSettings } from "@/lib/settings";
 import { saveGoogleTokens } from "@/lib/integrations";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
