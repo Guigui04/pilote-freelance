@@ -12,26 +12,30 @@ export async function getFinanceStats(year?: number) {
   const start = `${y}-01-01`;
   const end = `${y}-12-31`;
 
-  const rows = await db
-    .select({
-      total: invoices.total,
-      paid: invoices.paidAmount,
-      vat: invoices.vatAmount,
-      subtotal: invoices.subtotal,
-      status: invoices.status,
-      issueDate: invoices.issueDate,
-      companyId: invoices.companyId,
-      companyName: companies.name,
-    })
-    .from(invoices)
-    .leftJoin(companies, eq(invoices.companyId, companies.id))
-    .where(
-      and(
-        eq(invoices.userId, userId),
-        gte(invoices.issueDate, start),
-        lte(invoices.issueDate, end)
-      )
-    );
+  // Les factures et les paramètres sont indépendants → en parallèle.
+  const [rows, settings] = await Promise.all([
+    db
+      .select({
+        total: invoices.total,
+        paid: invoices.paidAmount,
+        vat: invoices.vatAmount,
+        subtotal: invoices.subtotal,
+        status: invoices.status,
+        issueDate: invoices.issueDate,
+        companyId: invoices.companyId,
+        companyName: companies.name,
+      })
+      .from(invoices)
+      .leftJoin(companies, eq(invoices.companyId, companies.id))
+      .where(
+        and(
+          eq(invoices.userId, userId),
+          gte(invoices.issueDate, start),
+          lte(invoices.issueDate, end)
+        )
+      ),
+    getSettings(userId),
+  ]);
 
   const monthly = MONTH_LABELS.map((label) => ({ label, facture: 0, encaisse: 0 }));
   let totalInvoiced = 0;
@@ -54,7 +58,6 @@ export async function getFinanceStats(year?: number) {
     byClient[key] = (byClient[key] ?? 0) + total;
   }
 
-  const settings = await getSettings(userId);
   const urssafRate = Number(settings.urssafRate ?? 22);
   const urssafEstimate = (totalHT * urssafRate) / 100;
 

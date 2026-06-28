@@ -22,7 +22,11 @@ const client =
   globalForDb.client ??
   postgres(connectionString, {
     prepare: false,
-    max: 1,
+    // Petit pool pour que les requêtes lancées en parallèle (Promise.all)
+    // s'exécutent réellement en concurrence. Le pooler Supabase (transaction)
+    // gère la montée en charge côté serveur.
+    max: 5,
+    idle_timeout: 20,
   });
 
 if (process.env.NODE_ENV !== "production") globalForDb.client = client;
