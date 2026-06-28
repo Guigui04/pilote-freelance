@@ -1,8 +1,12 @@
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 /**
- * Récupère l'utilisateur connecté (ou null).
+ * Utilisateur courant via vérification réseau Supabase (appel au serveur
+ * d'auth — coûteux). Réservé aux cas hors cycle de requête. Dans les Server
+ * Components / actions, préférer requireUser()/getUserId() qui lisent
+ * l'en-tête posé par le middleware (déjà vérifié, sans appel réseau).
  */
 export async function getUser() {
   const supabase = await createClient();
@@ -13,20 +17,17 @@ export async function getUser() {
 }
 
 /**
- * Exige un utilisateur connecté. Redirige vers /login sinon.
- * Renvoie l'id utilisateur (= user_id de toutes les tables).
+ * Identité courante depuis les en-têtes posés par le middleware
+ * (x-user-id / x-user-email). Le middleware a déjà vérifié le JWT et appliqué
+ * la garde ALLOWED_EMAIL : aucun appel réseau ici. Redirige vers /login si
+ * l'en-tête est absent (ne devrait pas arriver sur une route protégée).
  */
 export async function requireUser() {
-  const user = await getUser();
-  if (!user) redirect("/login");
-
-  // Garde mono-utilisateur : seul l'e-mail autorisé peut accéder.
-  const allowed = process.env.ALLOWED_EMAIL?.toLowerCase().trim();
-  if (allowed && user.email?.toLowerCase().trim() !== allowed) {
-    redirect("/auth/error?reason=forbidden");
-  }
-
-  return { id: user.id, email: user.email, user };
+  const h = await headers();
+  const id = h.get("x-user-id");
+  if (!id) redirect("/login");
+  const email = h.get("x-user-email") ?? undefined;
+  return { id, email };
 }
 
 /**

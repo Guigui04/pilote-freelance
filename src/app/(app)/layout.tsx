@@ -1,5 +1,4 @@
 import { requireUser } from "@/lib/auth";
-import { ensureSettings } from "@/lib/settings";
 import { Sidebar } from "@/components/sidebar";
 import { Topbar } from "@/components/topbar";
 import { MobileNav } from "@/components/mobile-nav";
@@ -9,8 +8,9 @@ export default async function AppLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // requireUser() lit l'en-tête posé par le middleware : aucun appel réseau.
+  // La ligne de paramètres est créée à la demande par getSettings().
   const user = await requireUser();
-  await ensureSettings(user.id);
 
   return (
     <div className="flex h-screen overflow-hidden">

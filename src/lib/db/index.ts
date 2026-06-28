@@ -24,9 +24,10 @@ const client =
     prepare: false,
     // Petit pool pour que les requêtes lancées en parallèle (Promise.all)
     // s'exécutent réellement en concurrence. Le pooler Supabase (transaction)
-    // gère la montée en charge côté serveur.
+    // gère la montée en charge côté serveur. Pas d'idle_timeout : on garde les
+    // connexions chaudes sur une instance Fluid Compute réutilisée (évite une
+    // poignée de main TLS au premier clic après une pause).
     max: 5,
-    idle_timeout: 20,
   });
 
 if (process.env.NODE_ENV !== "production") globalForDb.client = client;

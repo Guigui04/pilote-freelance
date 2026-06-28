@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { db } from "@/lib/db";
 import { settings } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
@@ -24,6 +25,10 @@ export async function ensureSettings(userId: string): Promise<Settings> {
   return created;
 }
 
-export async function getSettings(userId: string): Promise<Settings> {
-  return ensureSettings(userId);
-}
+/**
+ * Lecture des paramètres, mémoïsée par requête (React cache) : plusieurs
+ * appels dans un même rendu ne déclenchent qu'une seule requête.
+ */
+export const getSettings = cache(
+  async (userId: string): Promise<Settings> => ensureSettings(userId)
+);
